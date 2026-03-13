@@ -1,4 +1,6 @@
 const Appointment = require('../models/Appointment');
+const User = require('../models/User');
+const { sendBookingConfirmation, sendCancellationNotice } = require('../services/emailService');
 
 const TIME_SLOTS = [
   '09:00',
@@ -19,7 +21,8 @@ const TIME_SLOTS = [
 
 async function createAppointment(req, res) {
   try {
-    const { patientName, phone, doctorId, date, timeSlot } = req.body;
+    const { patientName, phone, email, doctorId, date, timeSlot } = req.body;
+    console.log('📧 Email received:', email);
 
     if (!patientName || !phone || !doctorId || !date || !timeSlot) {
       return res.status(400).json({ message: 'All fields are required' });
@@ -39,10 +42,25 @@ async function createAppointment(req, res) {
     const appointment = await Appointment.create({
       patientName,
       phone,
+      email: email || '',
       doctorId,
       date,
       timeSlot,
     });
+    
+    // Send confirmation email
+    if (email && email.trim()) {
+      const doctor = await User.findById(doctorId).select('name');
+      if (doctor) {
+        await sendBookingConfirmation({
+          toEmail: email.trim(),
+          patientName,
+          doctorName: doctor.name,
+          date,
+          timeSlot,
+        });
+      }
+    }
 
     return res.status(201).json(appointment);
   } catch (err) {

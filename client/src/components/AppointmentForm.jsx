@@ -23,6 +23,7 @@ export default function AppointmentForm({ doctors, onSubmit, submitting, refresh
   const [form, setForm] = useState({
     patientName: '',
     phone: '',
+    email: '',
     doctorId: '',
     date: todayIso,
     timeSlot: TIME_SLOTS[0],
@@ -89,12 +90,25 @@ export default function AppointmentForm({ doctors, onSubmit, submitting, refresh
       </div>
 
       <div>
-        <label className="text-xs font-medium text-slate-200">Phone</label>
+        <label className="text-xs font-medium text-slate-200">Patient Phone </label>
         <input
           value={form.phone}
           onChange={(e) => setField('phone', e.target.value)}
           required
           placeholder="e.g. 9876543210"
+          className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-400 outline-none ring-blue-500/40 focus:ring-2"
+        />
+      </div>
+
+      <div>
+        <label className="text-xs font-medium text-slate-200">
+          Patient Email 
+        </label>
+        <input
+          value={form.email}
+          onChange={(e) => setField('email', e.target.value)}
+          type="email"
+          placeholder="e.g. patient@gmail.com"
           className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-400 outline-none ring-blue-500/40 focus:ring-2"
         />
       </div>

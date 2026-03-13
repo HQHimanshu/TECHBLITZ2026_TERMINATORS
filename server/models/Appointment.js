@@ -4,6 +4,7 @@ const appointmentSchema = new mongoose.Schema(
   {
     patientName: { type: String, required: true },
     phone: { type: String, required: true },
+    email: { type: String, default: '' },
     doctorId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     date: { type: String, required: true }, // ISO date string (YYYY-MM-DD)
     timeSlot: { type: String, required: true }, // e.g. '09:30'
