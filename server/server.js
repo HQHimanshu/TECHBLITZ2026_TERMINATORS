@@ -34,3 +34,9 @@ connectDB()
     process.exit(1);
   });
 
+  // Keep alive - prevents Render free tier from sleeping
+const https = require('https');
+setInterval(() => {
+  https.get('https://clinic-backend-uyk1.onrender.com/');
+}, 10 * 60 * 1000); // ping every 10 minutes
+
